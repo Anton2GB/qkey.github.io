@@ -1,0 +1,790 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
+
+<!-- Yandex Games SDK -->
+<script src="https://yandex.ru/games/sdk/v2"></script>
+
+<title>Небоскрёб Мечты - Большой Замок</title>
+
+<link rel="icon" type="image/x-icon" href="./assets/favicon.png">
+
+
+<style>
+ body {
+        overflow:hidden;
+    }
+	
+*{
+	
+	margin:0;
+	padding:0;
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+	
+}
+
+img{
+
+	width:100%
+	/*ЗАПРЕТ ПЕРЕТЯГИВАНИЯ КАРТИНОК*/
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+	
+}
+
+html{background:#fff;height:100%}body{font-family:"Helvetica Neue",Arial,Helvetica,sans-serif;margin:0 auto;text-align:center;width:100%;height:100%;background:#f95240 url(assets/main-bg.png)}@media screen and (min-height:560px){html{font-size:100px}}@media screen and (min-height:640px){html{font-size:112.5px}}@media screen and (min-height:720px){html{font-size:125px}}@media screen and (min-height:800px){html{font-size:137.5px}}@media screen and (min-height:880px){html{font-size:150px}}@media screen and (min-height:960px){html{font-size:162.5px}}@media screen and (min-height:1040px){html{font-size:180px}}@media screen and (min-height:1200px){html{font-size:200px}}html{font-size:17.6vh}#canvas{position:fixed;left:0;top:0;right:0;bottom:0;margin:auto}a{text-decoration:none}li,ol,ul{list-style-type:none;padding:0;margin:0}.hide{display:none}.clear{clear:both}.loading{background-color:#f05a50;height:100%;width:100%}
+
+.loading .main{width:90%;margin:0 auto;color:#fff}
+
+.loading .main img{width:60%;margin:1rem auto 0}.loading .main .title{font-size:.3rem}
+
+.loading .main .text{font-size:.25rem}
+
+.loading .main .bar{height:.12rem;width:70%;border:3px solid #fff;border-radius:.6rem;margin:.1rem auto}
+
+.loading .main .bar .sub{height:.1rem;width:98%;margin:.008rem auto 0}.loading .main .bar .percent{height:100%;width:0;background-color:#fff;border-radius:.6rem}.loading .logo{position:absolute;bottom:.3rem;left:0;right:0}.loading .logo img{width:1rem}.content{height:100vh;margin:0 auto;position:relative}.landing .title{width:60%}.landing .logo{width:30%;position:absolute;right:.2rem;top:.2rem}.landing .action-2{position:absolute;bottom:.2rem;width:100%}.landing .start{width:65%}.slideTop{-webkit-animation:st 1s ease-in-out;animation:st 1s ease-in-out}@-webkit-keyframes st{0%{transform:translateZ(0)}100%{transform:translate3d(0,-100%,0)}}@keyframes st{0%{transform:translateZ(0)}100%{transform:translate3d(0,-100%,0)}}.slideBottom{-webkit-animation:sb 1s ease-in-out;animation:sb 1s ease-in-out}@-webkit-keyframes sb{0%{transform:translateZ(0)}100%{transform:translate3d(0,200%,0)}}@keyframes sb{0%{transform:translateZ(0)}100%{transform:translate3d(0,200%,0)}}.swing{-webkit-animation:sw 2s ease-in-out alternate infinite;animation:sw 2s ease-in-out alternate infinite}@-webkit-keyframes sw{0%{transform:rotate(5deg);transform-origin:top center}100%{transform:rotate(-5deg);transform-origin:top center}}@keyframes sw{0%{transform:rotate(5deg);transform-origin:top center}100%{transform:rotate(-5deg);transform-origin:top center}}
+
+.modal .mask{background-color:#000;opacity:.6;position:fixed;height:100%;width:100%;top:0;left:0}
+.modal .modal-content{position:fixed;height:100%;width:90%;margin-top:.3rem;top:0}.modal .main{width:85%;margin:0 auto}
+.modal .container{position:relative;}
+
+.modal .bg{position:absolute;top:15%;left:0;bottom:0;right:0; margin:0; width:100%;height:185%;z-index:-1;}
+
+.modal .modal-main{width:100%;position:absolute;top:0;left:0;margin-top:-.4rem;}
+.modal .over-img{width:80%;margin:.8rem auto 0}
+.modal .over-score{margin-top:-.2rem;font-size:.5rem;color:#ff735c;text-shadow:-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff,2px 2px 0 #fff}
+.modal .tip{font-size:.16rem;color:#9b724e}
+.modal .over-button-b{width:70%;margin:.1rem auto 0}
+
+.wxShare{background:#000;position:absolute;top:0;left:0;width:100%;height:100%;z-index:11;opacity:.9}.wxShare img{width:50%;float:right;margin:10px 10px 0 0}@font-face{font-family:wenxue;src:url(assets/wenxue.eot);src:url(assets/wenxue.eot),url(assets/wenxue.woff),url(assets/wenxue.ttf),url(assets/wenxue.svg)}.font-wenxue{font-family:wenxue}
+
+</style>
+</head>
+<body oncontextmenu="return false;">
+
+<canvas id="canvas" class="hide"></canvas>
+
+<div class="content">
+	<!-- ОКНО СЕТИ ИНТЕРНЕТ>
+	<div style="width:100%; height:100%; margin:0;padding:0;position:absolute;color:#fff;background-color:rgba(150,0,0,0
+	;z-index:10000;
+	" class="internet_connect" >
+	<div style="width:100%; height:100%; display: flex;justify-content: center;align-items: center;" class="text"></div>
+	</div -->
+<div class="loading"><div class="main"><img src="./assets/main-loading.gif" style="pointer-events: none;"><div class="progress"><div class="title font-wenxue">0%</div><div class="bar"><div class="sub"><div class="percent"></div></div></div><div class="text">Загрузка...</div></div></div></div>
+
+<div class="landing hide">
+
+	<!-- ВЫКЛЮЧЕНИЕ ЗВУКА - МЕНЮ ИГРЫ -->
+	<img src="./assets/sound.png" class="vol" style="
+	position:absolute;
+	right:5%;top:3%;width:10%;height:auto;z-index:1;" />
+	
+<div class="action-1"><img src="./assets/main-index-title.png" class="title swing"></div><div class="action-2"><img id="start" src="./assets/main-index-start.png" class="start"></div></div>
+
+<div id="modal" class="modal hide">
+<div class="mask"></div><div class="js-modal-content modal-content"><div class="main"><div class="container">
+<div class="modal-main">
+
+	<img src="./assets/main-modal-bg.png" class="bg" style="pointer-events: none;" />
+	
+	<!-- ОКНО ПРОИГРЫША -->
+	<div id="over-modal" class="hide js-modal-card"><img src="./assets/main-modal-over.png" class="over-img"><div id="score" class="over-score font-wenxue"></div><div id="over-zero" class="hide"><div class="tip" style="margin-top: 5%;">
+	
+	<div>Попробуй ещё раз!<br>
+	Рекорд: <span class="game_record">0</span>
+	</div>
+	
+	<!-- КНОПКА +3 ЖИЗНИ -->
+	<img src="./assets/main-modal-invite-b.png" class="over-button-b js-invite" style="position:absolute;
+	right:15%;bottom:-35%;"/>
+	
+	<!-- КНОПКА - ЕЩЁ РАЗ -->
+	<img src="./assets/main-modal-again-b.png" class="over-button-b js-reload" style="position:absolute;
+	right:15%;bottom:-60%;"/>
+	
+	<!-- ВЫКЛЮЧЕНИЕ ЗВУКА - МЕНЮ ИГРЫ -->
+	<img src="./assets/sound.png" class="vol" style="
+	position:absolute;
+	right:10%;bottom:-83%;width:10%;height:auto;" />
+
+	</div>
+
+</div></div></div></div></div></div></div><!--div class="wxShare hide"><img src="./assets/main-share-icon.png"></div-->
+
+</div>
+
+
+<script src="./dist/main.js"></script>
+<script src="./ads.js"></script>
+<script src="./assets/zepto-1.1.6.min.js"></script>
+<script>
+
+var lb;
+var lbtmmax = 60*1;
+var lbtm = lbtmmax;
+game_over = 0;
+	
+	var vol = 1;
+		if(localStorage.getItem('sou')!=null)
+		{
+			vol = atob(localStorage.getItem('sou'))
+			//alert(vol)
+		}
+		else	
+			{ 
+				vol=1
+				localStorage.setItem('sou',btoa(vol)) 
+			}
+			
+	var snd = "";
+	var snd_ext = ".mp3";
+	var bstsc = 0;
+	
+		//var a = document.createElement('audio');
+		//alert(Boolean(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, '')))
+		//console.log(a.canPlayType('audio/mpeg;'))
+		
+		//ОПРЕДЕЛЯЕМ ПОДДЕРЖКУ ФОРМАТОВ ЗВУКА
+		var a = document.createElement('audio');
+		if(Boolean(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''))=== true) //mp3
+		{
+			snd_ext = ".mp3"; 
+			//alert(snd_ext)
+		}
+		else
+			{
+				//Boolean(a.canPlayType && a.canPlayType('audio/ogg;').replace(/no/, ''))) //ogg
+				snd_ext = ".ogg"; 
+				//alert(snd_ext)
+			}
+	
+	var snd_drop  = new Audio();
+	var src_drop  = document.createElement("source");
+	src_drop.type = "audio/mpeg";
+	src_drop.src  = "./assets/drop"+snd_ext;
+	snd_drop.appendChild(src_drop);
+	snd_drop.volume = vol;
+	
+	var snd_drop_perfect  = new Audio();
+	var src_drop_perfect = document.createElement("source");
+	src_drop_perfect.type = "audio/mpeg";
+	src_drop_perfect.src  = "./assets/drop-perfect"+snd_ext;
+	snd_drop_perfect.appendChild(src_drop_perfect);
+	snd_drop_perfect.volume = vol;
+	
+	var snd_rotate  = new Audio();
+	var src_rotate  = document.createElement("source");
+	src_rotate.type = "audio/mpeg";
+	src_rotate.src  = "./assets/rotate"+snd_ext;
+	snd_rotate.appendChild(src_rotate);
+	snd_rotate.volume = vol;
+	
+	var snd_game_over  = new Audio();
+	var src_game_over  = document.createElement("source");
+	src_game_over.type = "audio/mpeg";
+	src_game_over.src  = "./assets/game-over"+snd_ext;
+	snd_game_over.appendChild(src_game_over);
+	snd_game_over.volume = vol;
+
+	//snd_drop.play(); 
+	//snd_drop_perfect.play(); 
+	//snd_rotate.play(); 
+	//snd_game_over.play(); 
+
+		function music_init(snd, vol)
+		{
+		
+			var audioCtx = new AudioContext();
+
+			var request = new XMLHttpRequest();
+			request.open( "GET", snd, true );
+			request.responseType = "arraybuffer";
+			request.onload = function () {
+				var audioData = request.response;
+
+				audioCtx.decodeAudioData(
+					audioData,
+					function ( buffer ) {
+						smp = audioCtx.createBufferSource();
+						smp.buffer = buffer;
+						//создание объекта GainNode и его привязка
+						gainNode = audioCtx.createGain ? audioCtx.createGain() : audioCtx.createGainNode();
+						smp.connect( gainNode );
+						smp.loop = 1;
+						gainNode.connect( audioCtx.destination );
+						gainNode.gain.value = vol;
+						
+						smp.start( 0 ); //ВОСПРОИЗВЕСТИ АВТОМАТИЧЕСКИ, ЕСЛИ ПО ИГРОВОЙ ОБЛАСТИ БЫЛО НАЖАТИЕ
+						
+						//alert(gainNode.gain.value)
+						//alert("ДУРАТИОН ПОЛУЧЕН!: "+(smp.buffer.duration))
+						
+					},
+					function ( e ) 
+					{
+						//alert( "Error with decoding audio data" + e.err );
+					}
+					
+					//,alert("on_2")
+					
+				);
+				
+				//alert("on_3")
+				
+			};
+			
+			//alert("on_1")
+			
+			request.send();
+			
+		}
+			
+		music_init( "./assets/bgm"+snd_ext , vol );	
+		//music_play()
+		
+	//$( document ).ready(function() {
+	
+		function music_play() 
+		{smp.start( 0 );}
+		
+	//});
+	
+	//setInterval(audio_volume,0)
+	//audio_volume()
+	
+
+	
+	//alert(vol)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+var domReady, loadFinish, canvasReady, loadError, gameStart, game, score, successCount
+  // init window height and width
+  var gameWidth = window.innerWidth
+  var gameHeight = window.innerHeight
+  var ratio = 1.5
+  if (gameHeight / gameWidth < ratio) {
+    gameWidth = Math.ceil(gameHeight / ratio)
+  }
+  $('.content').css({ "height": gameHeight + "px", "width": gameWidth + "px" })
+  $('.js-modal-content').css({ "width": gameWidth + "px" })
+
+  // loading animation AND visible menu
+  function hideLoading() {
+    if (domReady && canvasReady) {
+
+	  $('#canvas').show()
+      loadFinish = true;
+		
+      setTimeout(function () {
+        $('.loading').hide()
+        $('.landing').show()
+      }, 1000)
+    }
+  }
+  
+  
+  
+
+	var isOnLine = 1;
+
+
+   //ЗАГРУЗКА
+  function updateLoading(status) 
+  {
+    var success = status.success
+    var total = status.total
+    var failed = status.failed
+    if (failed > 0 && !loadError) {
+      loadError = true
+      //alert('Нет сети... Пожалуйста, проверьте подключение.')
+      return
+    }
+    var percent = parseInt((success / total) * 100);
+    if (percent === 100 && !canvasReady) {
+
+		//$('.loading .title').hide()
+		//$('.loading .bar').hide()
+		//$('.loading .percent').hide()
+
+		//$('.loading .text').text("Нажмите по Экрану!")
+
+		$('.loading').on('click', function () {
+			game.playBgm();
+		});
+
+			//ПРОВЕРКА НАЖАТИЯ КНОПКИ ПОСЛЕ ЗАГРУЗКИ ИГРЫ, ОБРАТОБОТКА РЕКЛАМЫ, РЕЗУЛЬТАТ
+		//$( document ).ready(function() {
+	
+		if(smp.buffer.duration!=null)
+		{
+			//alert("ДУРАТИОН НЕ НУЛ!: "+(smp.buffer.duration))
+			
+			game.playBgm(),
+			canvasReady = true,
+			hideLoading(),			
+			game_load()
+		}
+		else	
+			{
+				//alert(smp.buffer.duration)
+			}
+			
+		//});
+			
+		//});
+
+    }
+    percent = percent > 100 ? 100 : percent
+    percent = percent + '%'
+    $('.loading .title').text(percent);
+    $('.loading .percent').css({
+      'width': percent
+    })
+
+
+  }
+
+	//ПОКАЗ ОКНА - КОНЕЦ ИГРЫ
+  function overShowOver() {
+    $('#modal').show()
+    $('#over-modal').show()
+    $('#over-zero').show()
+	$('.vol').show()
+	//game.pauseBgm()
+	//ОТБАВИТЬ ГРОМКОСТЬ ФОНОВОЙ МУЗЫКИ
+	gainNode.gain.value = 0
+  }
+
+  //game customization options
+  const option = {
+    width: gameWidth,
+    height: gameHeight,
+    canvasId: 'canvas',
+    soundOn: true,
+    setGameScore: function (s) {
+      score = s
+    },
+    setGameSuccess: function (s) {
+      successCount = s
+    },
+    setGameFailed: function (f) {
+      $('#score').text(score)
+      if (f >= 3) overShowOver()
+    }
+  }
+
+  //ИНИЦИАЛИЗАЦИЯ ИГРЫ С ОПЦИЯМИ
+  function gameReady() {
+    game = TowerGame(option)
+    game.load(function () {
+      game.init()
+      setTimeout(function () {
+        //game.playBgm()
+		//ВОЗОБНОВИТЬ ГРОМКОСТЬ ФОНОВОЙ МУЗЫКИ
+		gainNode.gain.value = vol
+      })
+    }, updateLoading)
+  }
+
+  var isWechat = navigator.userAgent.toLowerCase().indexOf("micromessenger") !== -1
+  if (isWechat) {
+    document.addEventListener("WeixinJSBridgeReady", gameReady, false)
+  } else {
+    gameReady()
+  }
+
+  function indexHide() {
+    $('.landing .action-1').addClass('slideTop')
+    $('.landing .action-2').addClass('slideBottom')
+    setTimeout(function () {
+      $('.landing').hide()
+    }, 950)
+  }
+
+  //НАЖАТИЕ ПО КНОПКЕ - НАЧАТЬ ИГРУ
+  $('#start').on('click', function () {
+    if (gameStart) return
+    gameStart = true
+    setTimeout(function () {
+      //game.playBgm()
+	  //ВОЗОБНОВИТЬ ГРОМКОСТЬ ФОНОВОЙ МУЗЫКИ
+	  music_play() 
+	  gainNode.gain.value = vol
+	  
+	  		$('.vol').hide()
+    })
+    indexHide()
+    setTimeout(game.start, 400)
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+//ВЫКЛЮЧЕНИЕ ЗВУКА ПРИ СМЕНЕ ВКЛАДКИ
+document.addEventListener("visibilitychange", () => {
+	if (document.visibilityState === "visible") 
+	{
+
+		if(vol)
+		{
+			 //game.playBgm()
+			if(ads_timer_act)
+			{
+				snd_drop.volume = vol;
+				snd_drop_perfect.volume = vol;
+				snd_rotate.volume = vol;
+				snd_game_over.volume = vol;
+				
+					if(game_over==0)
+					{gainNode.gain.value = vol;}
+					//alert(game_over)
+			}
+		}
+
+	} 
+	else 
+		{
+			
+			//game.pauseBgm()
+			//game.pauseGameOver()
+			snd_drop.volume = 0;
+			snd_drop_perfect.volume = 0;
+			snd_rotate.volume = 0;
+			snd_game_over.volume = 0;
+			gainNode.gain.value = 0;
+
+		}
+});
+
+window.addEventListener("beforeunload", function() {
+
+	snd_drop.volume = 0;
+	snd_drop_perfect.volume = 0;
+	snd_rotate.volume = 0;
+	snd_game_over.volume = 0;
+	gainNode.gain.value = 0;
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //КНОПКА - ЕЩЁ РАЗ
+  //$('.js-reload').on('click', function () {
+    
+	//ПРОВЕРКА НАЖАТИЯ КНОПКИ, ОБРАТОБОТКА РЕКЛАМЫ, РЕЗУЛЬТАТ
+	game_reload();
+		
+  //})
+
+/////////////////////////////////////////////////
+//////////////////////////////////////////////
+
+  //ДОБАВИТЬ ЖИЗНИ
+  //$('.js-invite').on('click', function () {
+    
+	//window.location.href = window.location.href + '?s=' + (+new Date())
+		
+		game_push_lives()
+		
+		
+
+		//gameReady()
+		
+		//ПОЛНОЭКРАННАЯ РЕКЛАМА
+		//ysdk.adv.showFullscreenAdv()
+	
+  //})
+
+  /*$('.js-invite').on('click', function () {
+    $('.wxShare').show()
+  })
+
+  $('.wxShare').on('click', function () {
+    $('.wxShare').hide()
+  })*/
+
+  // listener
+  window.addEventListener('load', function () 
+  {
+    
+	domReady = true
+    hideLoading()
+	
+  }, false);
+  
+  function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-YCWZ8ZDCH2")
+ 
+  </script>
+  
+
+  <script>
+ 
+		//ПРОВЕРКА СЕТИ
+		//var connectionMessage = "internet connection";
+		//var noConnectionMessage = "No internet connection.";
+		var lb = "";
+		var internet_connect = 1; 
+		window.onload = checkInternetConnection;
+		function checkInternetConnection() {
+		  var isOnLine = navigator.onLine;
+		   if (isOnLine) {
+		   //alert(connectionMessage);
+
+				//if(internet_connect=0)
+				//{
+					
+					/*$('.internet_connect').css('background-color','rgba(255,150,0,0.5)')
+					$('.internet_connect .text').text("СЕТЬ НАЙДЕНА!");
+					$('.internet_connect').hide()
+					
+					//$(":input").removeAttr("disabled");*/
+					internet_connect = 1; 
+					
+				//}
+		
+		   } else {
+			 //alert(noConnectionMessage);
+			 
+				//if(internet_connect=1)
+				//{
+					
+					/*$('.internet_connect').css('background-color','rgba(150,0,0,0.5)')
+					$('.internet_connect .text').text("НЕТ СЕТИ!");
+					$('.internet_connect').show()
+					
+					//$(":input").attr("disabled","disabled"); 
+					*/
+					internet_connect = 0; 
+					
+				//}
+				
+		   }
+		   
+		   return isOnLine;
+		   
+		}
+			
+	//СООТНОШЕНИЕ СТОРОН ИГРЫ
+	function set_ratio()
+	{
+	
+		
+	
+		var gameWidth = window.innerWidth
+		var gameHeight = window.innerHeight
+		var ratio = 1.5
+		if (gameHeight / gameWidth < ratio) {
+		gameWidth = Math.ceil(gameHeight / ratio)
+		}
+		
+		$('#canvas').css({ "height": gameHeight + "px", "width": gameWidth + "px" })
+		
+		$('.content').css({ "height": gameHeight + "px", "width": gameWidth + "px" })
+		$('.js-modal-content').css({ "width": gameWidth + "px" })
+		
+		//game.pauseBgm()
+		//gainNode.gain.value = 0,
+		
+	console.clear(); //НЕ ПОКАЗЫВАТЬ ОШИБКИ В КОНСОЛИ
+		
+			//ПРОВЕРКА СЕТИ
+			checkInternetConnection()
+		
+		setTimeout(set_ratio,0) //setInterval
+	
+	}
+		
+		
+	
+	function sound_volum_pic_alpha(vol)
+	{
+		
+		if(vol!=0)
+		{
+			//alert(1);
+			$('.vol').css({ 'opacity' : 1 });
+			//document.getElementById("audio").volume = (value / 100);
+			
+		}
+		else
+			{
+				//alert(0);
+				$('.vol').css({ 'opacity' : 0.5});
+				//document.getElementById("bgm").volume = (value / 0);
+			}
+	
+	}
+		
+	$('.vol').on('click', function () {
+
+		if(vol!=1)
+		{
+			vol=1
+			//game.playBgm()
+			//e.playAudio("bgm")
+			snd_drop.volume = vol;
+			snd_drop_perfect.volume = vol;
+			snd_rotate.volume = vol;
+			snd_game_over.volume = vol;
+			gainNode.gain.value = vol;
+			//alert(vol)
+		}
+		else	
+			{
+				vol=0
+				//game.pauseBgm()
+				//game.pauseGameOver()
+				//e.pauseAudio("bgm")
+				snd_drop.volume = 0;
+				snd_drop_perfect.volume = 0;
+				snd_rotate.volume = 0;
+				snd_game_over.volume = vol;
+				gainNode.gain.value = 0;
+				//alert(vol)
+		
+			}
+			
+		sound_volum_pic_alpha(vol);
+		localStorage.setItem('sou',btoa(vol))
+		
+		//alert(vol)
+		
+	})
+	  
+	  
+	set_ratio()
+	
+	//ИНИЦИАЛИЗАЦИЯ ЯНДЕКС SDK
+	//let ysdk;
+	var sdk_init = 0;
+	//alert(sdk_init)
+	YaGames
+	.init()
+	.then(ysdk => {
+		
+		//console.log('Yandex SDK initialized');
+		window.ysdk = ysdk;
+		sdk_init=1; //ИНИЦИАЛИЗАЦИЯ ПРОШЛА УСПЕШНО
+		
+		ysdk.features.LoadingAPI?.ready(); // Показываем SDK, что игра загрузилась и можно начинать играть
+	
+		//alert("ok!")
+		
+			//ИНИЦИАЛИЗАЦИЯ ЛИДЕРБОРДОВ
+			if(sdk_init)
+			{
+				//leaderboards_init();
+				//leaderboards_get("test");
+				
+				ysdk.getLeaderboards().then(_lb => lb = _lb)
+				
+				//alert(lb)
+	
+			}
+		
+		//alert(callbackName)
+		
+  
+	}); //ysdk.adv.showFullscreenAdv())
+
+	//alert("Создать окно нет сети!")
+	
+	
+	
+	/*
+	var f;
+	f = btoa("Best_Score");
+	alert(f);
+	f = atob(f);
+	alert(f);
+	*/
+	
+	
+	if(localStorage.getItem('bstsc')===null)
+	{
+		localStorage.setItem('bstsc', btoa(0) )
+		bstsc = 0
+		//alert(bstsc)
+	}
+	else
+		{
+			bstsc = atob(localStorage.getItem('bstsc'))
+			//alert(bstsc)
+		}
+	leaderboards_set("lbGlobal", bstsc );
+		
+	sound_volum_pic_alpha(vol);
+	
+	//alert(localStorage.getItem('bstsc'))
+	//localStorage.setItem('bstsc', e.getVariable("GAME_SCORE"))
+	
+	
+	
+	//ВОСПРОИЗВЕСТИ ФОНОВЫЙ ЗВУК
+	//$( document ).ready(function() {
+	//	music_play()
+	//});
+	
+	
+	
+	
+
+ </script>
+ 
+ 
+ 
+ 
+  </body></html>
+  
+   
